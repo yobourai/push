@@ -5,6 +5,7 @@
 typedef struct s_stack
 {
 	int			size;
+	int top ;
 	int	*arr;
 }t_stack;	
 
@@ -497,18 +498,19 @@ void sort_fc(t_stack *arr)
 				sa(arr);
 
 }
-void sort_tree(t_stack *arr)
+void sort_three(t_stack *arr)
 {
 	if(arr->size <= 2)
 		{
 			sort_fc(arr);
 			return ;
 		}
-		if(arr->arr[0] < arr->arr[1] && arr->arr[1] > arr->arr[2])
-		{			rra(arr);
+		if(arr->arr[0] < arr->arr[1] && arr->arr[1] > arr->arr[2] && arr->arr[2] > arr->arr[0])
+		{		
+					rra(arr);
 					sa(arr);
 		}
-		else if(arr->arr[0] > arr->arr[1] && arr->arr[1] < arr->arr[2])
+		else if(arr->arr[0] > arr->arr[1] && arr->arr[1] < arr->arr[2] && arr->arr[2] > arr->arr[0])
 			{
 				 rra(arr);
 				 sa(arr);
@@ -524,33 +526,65 @@ void sort_tree(t_stack *arr)
 			rra(arr);
 		}
 }
-void sort_five(t_stack *arr)
+void push(t_stack *src , t_stack *dst)
 {
-
-
+	dst->top++;
+	dst->arr[dst->top] = src->arr[src->top];
+	src->top--;
 
 }
+int	 pop(t_stack *arr)
+{
+	return arr->arr[arr->top];
+}
 
+void pa(t_stack *a,t_stack *b)
+{
+	push(b ,a);
+	printf("pa\n");
+}
+void pb(t_stack *a,t_stack *b)
+{
+	push(a ,b);
+	printf("pb\n");
+}
+// void sort_five(t_stack *arr)
+// {
+
+
+
+// }
+
+t_stack *init(t_stack *stack)
+{
+	stack = malloc(sizeof(t_stack));
+	stack->top = -1;
+	stack->size = 0;
+	return stack;
+}
 int main(int ac, char *av[]) 
 {
+	t_stack *a;
+	t_stack *b;
 	if(ac <= 1)
 	{
 		printf("error\n");
 		exit(1);
 	}
-	t_stack *ke ;
-	ke = malloc(sizeof(t_stack)); 
 	t_stack len ;
     int *tab;
     int i = 0;
+	a = init(a);
     tab= parc(ac, av , &len);
-	ke->arr = tab ;
-	ke->size = len.size;
-	sort_tree(ke);
+	a->arr = tab ;
+	a->size = len.size;
+	b =init(b);
+	// pop(a);
+	sort_three(a);
 	i =0;
     while (i < len.size ) 
     {
-        printf("%d\n", ke->arr[i]);
+        printf("%d\n", a->arr[i]);
         i++;                                                                                            
     }
     return 0;
