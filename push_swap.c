@@ -383,6 +383,7 @@ void sa(t_stack *arr)
 		k =arr->arr[0]; 
 		arr->arr[0] = arr->arr[1];
 		arr->arr[1] = k ;
+		printf("sa\n");
 
 }
 void sb(t_stack *arr)
@@ -413,7 +414,7 @@ void ra(t_stack *arr)
         i++;
     }
     arr->arr[arr->size -1] = first;
-	
+	printf("ra\n");
 }
 
 void rb(t_stack *arr)
@@ -457,6 +458,7 @@ void rra(t_stack *arr)
 
 	}
     arr->arr[0] = last;
+	printf("rra\n");
 
 }
 
@@ -489,39 +491,44 @@ void rrr(t_stack *arr)
 
 void sort_fc(t_stack *arr)
 {
-	int i = 0;
-		while(i < arr->size - 1)
-		{		
-			if(arr->arr[i] > arr->arr[i+1])
-			{
+	if(arr->size <= 1)
+		return ;
+	if(arr->arr[0] > arr->arr[1])
 				sa(arr);
-			}
-			i++;
-		}
 
 }
 void sort_tree(t_stack *arr)
 {
-	int i = 0;
-	int tmp ;
-	while(arr->size > i)
-			i++;
-
-	int k = i;
-	i = 0;
-	int first ;
-	first = arr->arr[0];
-		if(arr->arr[i] > arr->arr[i+1])
-				sa(arr);
-		if(arr->arr[i] > arr->arr[k])
-				sa(arr);
-		if(first > arr->arr[k])
+	if(arr->size <= 2)
+		{
+			sort_fc(arr);
+			return ;
+		}
+		if(arr->arr[0] < arr->arr[1] && arr->arr[1] > arr->arr[2])
+		{			rra(arr);
+					sa(arr);
+		}
+		else if(arr->arr[0] > arr->arr[1] && arr->arr[1] < arr->arr[2])
 			{
-				 tmp = first;
-				 first =arr->arr[k];
-				 arr->arr[k] = tmp;
+				 rra(arr);
+				 sa(arr);
+				 rra(arr);
 			}
-	
+		else if(arr->arr[0] < arr->arr[1] && arr->arr[1] > arr->arr[2])
+				 rra(arr);
+		else if(arr->arr[0] > arr->arr[1] && arr->arr[1] < arr->arr[2])
+				ra(arr);
+		else if(arr->arr[0] > arr->arr[1] && arr->arr[1] > arr->arr[2])
+		{
+			sa(arr);
+			rra(arr);
+		}
+}
+void sort_five(t_stack *arr)
+{
+
+
+
 }
 
 int main(int ac, char *av[]) 
@@ -538,7 +545,7 @@ int main(int ac, char *av[])
     int i = 0;
     tab= parc(ac, av , &len);
 	ke->arr = tab ;
-	ke->size = ac  - 1;
+	ke->size = len.size;
 	sort_tree(ke);
 	i =0;
     while (i < len.size ) 
