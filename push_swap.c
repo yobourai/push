@@ -322,21 +322,16 @@ void print_arg(char ***tabs)
 }
 
 
-int *parc(int ac, char *av[] , t_stack *l) 
+t_stack *parc(int ac, char *av[]) 
 {
+	t_stack *stack;
+	stack =malloc(sizeof(t_stack));
 
-    if(ac == 1)
-    {
-        printf("Error\n");
-        exit(1);
-    }
     int i = 1;
     int j = 0;
-    int *arr;
     int k = 0;
     char ***ptr;
     ptr = malloc(sizeof(char **) * ac );
-
 
     while(av[i])
     {  
@@ -345,22 +340,23 @@ int *parc(int ac, char *av[] , t_stack *l)
         j++;
     }
     ptr[j] = NULL;
-    j = 0;
-    i=0;
-    k= 0;
 
-	#include <stdio.h>
-	l->size = len(ptr);
+	stack->size = len(ptr);
+	stack->top = stack->size - 1;
+    
+	k = stack->size -1;
     int flag = 0;
 
-    arr = malloc(sizeof(int) * (l->size) );
+    stack->arr = malloc(sizeof(int) * (stack->size) );
+	
+	j = 0;
     while(ptr[j])
     {
         i = 0;
         while(ptr[j][i])    
         {
-                arr[k] = ft_atoi(ptr[j][i],&flag);
-                k++;
+            	stack->arr[k] = ft_atoi(ptr[j][i],&flag);
+                k--;
             	i++;
     
         }
@@ -371,222 +367,350 @@ int *parc(int ac, char *av[] , t_stack *l)
         printf("Error\n");
         exit(1);
     }
-	if(check(arr , len(ptr))== 1)
+	if(check(stack->arr , len(ptr))== 1)
     {
 		printf("errro num\n");
         exit(1);
     }
-    return arr;
+    return stack;
 }
+
 void sa(t_stack *arr)
 {
 	int k = 0;
-		k =arr->arr[0]; 
-		arr->arr[0] = arr->arr[1];
-		arr->arr[1] = k ;
+	if(arr->size <= 1)
+			return ;
+		k =arr->arr[arr->size-1]; 
+		arr->arr[arr->size-1] = arr->arr[arr->size-2];
+		arr->arr[arr->size -2] = k ;
 		printf("sa\n");
 
 }
 void sb(t_stack *arr)
 {
-	int k = 0;
-		k =arr->arr[0]; 
-		arr->arr[0] = arr->arr[1];
-		arr->arr[1] = k ;
+	if(arr->size <= 1)
+			return ;
+		int k = 0;
+		k =arr->arr[arr->size-1]; 
+		arr->arr[arr->size-1] = arr->arr[arr->size-2];
+		arr->arr[arr->size -2] = k ;
+		printf("sb\n");
 
 }
-void ss(t_stack *arr)
+void ss(t_stack *a, t_stack *b )
 {
-	sa(arr);
-	sb(arr);
+	if(a->size <= 1 || b->size <= 1)
+		return ;
+	int k = 0;
+	int n = 0;
+	k =a->arr[a->size-1]; 
+	a->arr[a->size-1] = a->arr[a->size-2];
+	a->arr[a->size -2] = k ;
+
+	n =b->arr[b->size-1]; 
+	b->arr[b->size-1] = b->arr[b->size-2];
+	b->arr[b->size -2] = n ;
+	printf("ss\n");
 }
 void ra(t_stack *arr)
-{
-    int first;
-    int i;
-    if (arr->size <= 1) 
-        return;
-    first = arr->arr[0];
-    i = 0;
-    
-    while (i < arr->size - 1)
-    {
-        arr->arr[i] = arr->arr[i + 1];
-        i++;
-    }
-    arr->arr[arr->size -1] = first;
-	printf("ra\n");
-}
-
-void rb(t_stack *arr)
-{
-    int first;
-    int i;
-    if (arr->size <= 1) 
-        return;
-    first = arr->arr[0];
-    i = 0;
-    
-    while (i < arr->size - 1)
-    {
-        arr->arr[i] = arr->arr[i + 1];
-        i++;
-    }
-    arr->arr[arr->size -1] = first;
-	
-}
-void rr(t_stack *arr)
-{
-	ra(arr);
-	rb(arr);
-}
-void rra(t_stack *arr)
 {
     int last;
     int i;
     if (arr->size <= 1) 
         return;
-    last = arr->arr[arr->size - 1];
+    last = arr->arr[arr->size -1];
+    i = arr->size -1;
+    
+    while (i > 0)
+    {
+        arr->arr[i] = arr->arr[i - 1];
+        i--;
+    }
+    arr->arr[0] = last;
+	printf("ra\n");
+}
+
+void rb(t_stack *arr)
+{
+    int last;
+    int i;
+    if (arr->size <= 1) 
+        return;
+    last = arr->arr[arr->size -1];
+    i = arr->size -1;
+    
+    while (i > 0)
+    {
+        arr->arr[i] = arr->arr[i - 1];
+        i--;
+    }
+    arr->arr[0] = last;
+	printf("rb\n");
+	
+}
+void rotate_b(t_stack *arr)
+{
+    int last;
+    int i;
+    if (arr->size <= 1) 
+        return;
+    last = arr->arr[arr->size -1];
+    i = arr->size -1;
+    
+    while (i > 0)
+    {
+        arr->arr[i] = arr->arr[i - 1];
+        i--;
+    }
+    arr->arr[0] = last;
+	printf("rr\n");
+	
+}
+void rotate_a(t_stack *arr)
+{
+    int last;
+    int i;
+    if (arr->size <= 1) 
+        return;
+    last = arr->arr[arr->size -1];
+    i = arr->size -1;
+    
+    while (i > 0)
+    {
+        arr->arr[i] = arr->arr[i - 1];
+        i--;
+    }
+    arr->arr[0] = last;
+}
+void rr(t_stack *stacka , t_stack *stackb)
+{
+	rotate_a(stacka);
+	rotate_b(stackb);
+}
+void rra(t_stack *arr)
+{
+    int first;
+    int i;
+    if (arr->size <= 1) 
+        return;
+    first = arr->arr[0];
     i = 0;
     
-    while (i < arr->size - 1)
-		 	i++;
-
-	while(i > 0)
+	while(i < arr->size-1)
 	{
-		arr->arr[i] = arr->arr[i - 1];
-		i--;
+		arr->arr[i] = arr->arr[i + 1];
+		i++;
 
 	}
-    arr->arr[0] = last;
+    arr->arr[arr->size -1] = first;
 	printf("rra\n");
 
 }
 
 void rrb(t_stack *arr)
 {
-	int last;
+	int first;
     int i;
     if (arr->size <= 1) 
         return;
-    last = arr->arr[arr->size - 1];
+    first = arr->arr[0];
     i = 0;
     
-    while (i < arr->size - 1)
-		 	i++;
-
-	while(i > 0)
+	while(i < arr->size-1)
 	{
-		arr->arr[i] = arr->arr[i - 1];
-		i--;
+		arr->arr[i] = arr->arr[i + 1];
+		i++;
 
 	}
-    arr->arr[0] = last;
-
+    arr->arr[arr->size -1] = first;
+	printf("rrb\n");
 }
-void rrr(t_stack *arr)
+
+void rrotateb(t_stack *arr)
 {
-	rra(arr);
-	rrb(arr);
+	int first;
+    int i;
+    if (arr->size <= 1) 
+        return;
+    first = arr->arr[0];
+    i = 0;
+    
+	while(i < arr->size-1)
+	{
+		arr->arr[i] = arr->arr[i + 1];
+		i++;
+
+	}
+    arr->arr[arr->size -1] = first;
+	printf("rrr\n");
+}
+void rrotatea(t_stack *arr)
+{
+	int first;
+    int i;
+    if (arr->size <= 1) 
+        return;
+    first = arr->arr[0];
+    i = 0;
+    
+	while(i < arr->size-1)
+	{
+		arr->arr[i] = arr->arr[i + 1];
+		i++;
+
+	}
+    arr->arr[arr->size -1] = first;
+}
+void rrr(t_stack *stacka , t_stack* stackb)
+{
+	rrotatea(stacka);
+	rrotateb(stackb);
 }
 
 void sort_fc(t_stack *arr)
 {
 	if(arr->size <= 1)
 		return ;
-	if(arr->arr[0] > arr->arr[1])
+	if(arr->arr[arr->top] > arr->arr[arr->top - 1])
 				sa(arr);
 
 }
-void sort_three(t_stack *arr)
+
+void sort_three(t_stack *stack)
 {
-	if(arr->size <= 2)
+	if(stack->size <= 2)
 		{
-			sort_fc(arr);
+			sort_fc(stack);
 			return ;
 		}
-		if(arr->arr[0] < arr->arr[1] && arr->arr[1] > arr->arr[2] && arr->arr[2] > arr->arr[0])
+		if(stack->arr[stack->top] < stack->arr[stack->top -1] && stack->arr[stack->top -2] < stack->arr[stack->top -1] && stack->arr[stack->top - 2] > stack->arr[stack->top])
 		{		
-					rra(arr);
-					sa(arr);
+					sa(stack);
+					ra(stack);
 		}
-		else if(arr->arr[0] > arr->arr[1] && arr->arr[1] < arr->arr[2] && arr->arr[2] > arr->arr[0])
-			{
-				 rra(arr);
-				 sa(arr);
-				 rra(arr);
-			}
-		else if(arr->arr[0] < arr->arr[1] && arr->arr[1] > arr->arr[2])
-				 rra(arr);
-		else if(arr->arr[0] > arr->arr[1] && arr->arr[1] < arr->arr[2])
-				ra(arr);
-		else if(arr->arr[0] > arr->arr[1] && arr->arr[1] > arr->arr[2])
+		else if(stack->arr[stack->top] > stack->arr[stack->top -1] && stack->arr[stack->top -2] > stack->arr[stack->top -1] && stack->arr[stack->top -2] > stack->arr[stack->top])
+				 sa(stack);
+		else if(stack->arr[stack->top] < stack->arr[stack->top -1] && stack->arr[stack->top -2] < stack->arr[stack->top] && stack->arr[stack->top -2] < stack->arr[stack->top - 1])
+				rra(stack);
+		else if(stack->arr[stack->top] > stack->arr[stack->top -1] && stack->arr[stack->top -2] > stack->arr[stack->top - 1] && stack->arr[stack->top - 2] < stack->arr[stack->top])
+				ra(stack);
+		else if(stack->arr[stack->top] > stack->arr[stack->top -1] && stack->arr[stack->top -2] < stack->arr[stack->top] && stack->arr[stack->top -2] < stack->arr[stack->top - 1])
 		{
-			sa(arr);
-			rra(arr);
+			sa(stack);
+			rra(stack);
+			ra(stack);
+			ra(stack);
+			ra(stack);
 		}
 }
-void push(t_stack *src , t_stack *dst)
+
+void push_to_stack(t_stack *src , t_stack *dst)
 {
+	dst->size++;
 	dst->top++;
 	dst->arr[dst->top] = src->arr[src->top];
+	src->size--;
 	src->top--;
 
 }
-int	 pop(t_stack *arr)
-{
-	return arr->arr[arr->top];
-}
+
 
 void pa(t_stack *a,t_stack *b)
 {
-	push(b ,a);
+	if(!b->size)
+		return ;
+	push_to_stack(b ,a);
 	printf("pa\n");
 }
 void pb(t_stack *a,t_stack *b)
 {
-	push(a ,b);
+	if(!a->size)
+		return ;
+	push_to_stack(a ,b);
 	printf("pb\n");
 }
-// void sort_five(t_stack *arr)
-// {
+int min(t_stack *arr)
+{
+	int i = 0;
+	int tmp;
+	while(i < arr->size -1)
+	{
+		if(arr->arr[i] < arr->arr[i+1])
+		{
+			tmp = arr->arr[i];
+			arr->arr[i] = arr->arr[i+1];
+			arr->arr[i+1] = tmp ;
+			i =0;
+		}
+		i++;
+	}
+	if(arr->arr[arr->top] > arr->arr[arr->top -1])
+			sa(arr);
+	return arr->arr[arr->top];
+}
+void sort_five(t_stack *a , t_stack *b)
+{
+		min(a);
+		pb(a ,b);
+		min(a);
+		pb(a,b);
+		sort_three(a);
+		pa(a,b);
+		pa(a,b);
+		sort_fc(a);
+}
 
-
-
-// }
-
-t_stack *init(t_stack *stack)
+t_stack *init(t_stack *stack , int size)
 {
 	stack = malloc(sizeof(t_stack));
+	stack->arr = malloc(sizeof(int) * size);
+	// ft_memset(&stack->arr, 0,stack->size);
 	stack->top = -1;
 	stack->size = 0;
 	return stack;
+}
+
+void printstack(t_stack *a , t_stack *b)
+{
+	int i ;
+	i = a->size - 1;
+	while(0 <= i)
+	{
+		printf("%d\n",a->arr[i]);
+		i--;
+	}
+	int k = b->size -1;
+		printf("***************\n");
+
+	while(k >= 0 )
+	{
+		printf("stack B		%d\n", b->arr[k]);
+		k--;
+	}
+
+
 }
 int main(int ac, char *av[]) 
 {
 	t_stack *a;
 	t_stack *b;
+
 	if(ac <= 1)
 	{
 		printf("error\n");
 		exit(1);
 	}
-	t_stack len ;
+
     int *tab;
     int i = 0;
-	a = init(a);
-    tab= parc(ac, av , &len);
-	a->arr = tab ;
-	a->size = len.size;
-	b =init(b);
-	// pop(a);
-	sort_three(a);
-	i =0;
-    while (i < len.size ) 
-    {
-        printf("%d\n", a->arr[i]);
-        i++;                                                                                            
-    }
+    a = parc(ac, av);
+	b = init(b, a->size);
+	printstack(a ,b);
+	sort_five(a , b);
+	
+	printstack(a ,b);
+	exit(0);
+
     return 0;
 
 }
