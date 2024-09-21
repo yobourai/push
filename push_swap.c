@@ -2,10 +2,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+
 typedef struct s_stack
 {
 	int			size;
 	int top ;
+	int index;
 	int	*arr;
 }t_stack;	
 
@@ -637,9 +639,13 @@ int min(t_stack *arr)
 	{
 		if(arr->arr[i] < arr->arr[i+1])
 		{
+			printf("arr[%d] = %d\n", i, arr->arr[i]);
+			printf("arr[%d] = %d\n", i + 1, arr->arr[i + 1]);
 			tmp = arr->arr[i];
 			arr->arr[i] = arr->arr[i+1];
 			arr->arr[i+1] = tmp ;
+			printf("arr[%d] = %d\n", i, arr->arr[i]);
+			printf("arr[%d] = %d\n", i + 1, arr->arr[i + 1]);
 			i =0;
 		}
 		i++;
@@ -676,7 +682,7 @@ void printstack(t_stack *a , t_stack *b)
 	i = a->size - 1;
 	while(0 <= i)
 	{
-		printf("%d\n",a->arr[i]);
+		printf("stack A = 			%d\n",a->arr[i]);
 		i--;
 	}
 	int k = b->size -1;
@@ -688,6 +694,55 @@ void printstack(t_stack *a , t_stack *b)
 		k--;
 	}
 
+
+}
+
+int *copy_array(t_stack *a) 
+{
+    int i = 0;
+    int *arr = malloc(sizeof(int) * a->size); 
+
+    int *c = a->arr;
+    while (i < a->size) 
+	{
+        arr[i] = c[i];
+        i++;
+    }
+    return arr;
+}
+
+int bubl(t_stack *a) 
+{
+    int *arr = copy_array(a);  
+    int i = 1;
+     a->index = 0;
+    
+    while (i < a->size -1) 
+	{
+        if (a->arr[i] > a->arr[a->index]) 
+            {
+				a->index = i;
+			}
+        i++;
+    }
+	printf("index%d\n", arr[a->index]);
+    return a->index ;
+}
+void range(t_stack *a , t_stack *b )
+{
+	int i = 0;
+
+	while(i < a->size -1)
+	{
+		if(a->arr[a->index] == a->arr[a->top])
+		{
+			pb(a,b);
+		}
+		else
+			ra(a);
+		i++;
+	}
+	printf("index%d\n", a->arr[a->index]);
 
 }
 int main(int ac, char *av[]) 
@@ -706,11 +761,10 @@ int main(int ac, char *av[])
     a = parc(ac, av);
 	b = init(b, a->size);
 	printstack(a ,b);
-	sort_five(a , b);
-	
+	// bubl(a);
+	sort_five(a,b);
+	// range(a,b);
 	printstack(a ,b);
-	exit(0);
-
     return 0;
 
 }
